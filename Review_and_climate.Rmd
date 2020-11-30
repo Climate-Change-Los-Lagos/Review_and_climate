@@ -57,3 +57,160 @@ GCMs <- list.files(path = "ChelsaData/Future") %>% str_remove_all("_rcp85.rds")
 ```
 
 # Climate change analisis
+
+```{r Crops, cache = T}
+### Leer presente
+
+Presente <- read_rds("ChelsaData/Present/Presente.rds") %>% crop(Regiones)
+
+Presente <- Presente  %>% 
+  mask(rasterize(Regiones, Presente[[1]]))
+
+Presente <- Presente[[c("Bio1", "Bio12")]]
+  
+Presente[["Bio1"]] <- Presente[["Bio1"]]/10 
+
+Futuros <- list.files(path = "ChelsaData/Future", full.names = T) %>% purrr::map(read_rds) %>%
+purrr::map(~crop(.x, Regiones))
+
+Futuros <- Futuros  %>% purrr::map(~mask(.x, rasterize(Regiones, Presente[[1]])))
+
+Futuros <- Futuros %>% purrr::map(~.x[[c("Bio1", "Bio12")]]) 
+
+for(i in 1:length(Futuros)){
+  Futuros[[i]][["Bio1"]] <- Futuros[[i]][["Bio1"]]/10
+}
+
+Difs <- Futuros %>% purrr::map(~ .x - Presente)
+
+Dif_Temp <- Difs %>% purrr::map(~.x[["Bio1"]]) %>% reduce(stack)
+
+Dif_Prec <- Difs %>% purrr::map(~.x[["Bio12"]]) %>% reduce(stack)
+
+PNLagos_Rios <- readRDS("~/Documents/CI_Project/PNLagos.rds") %>% dplyr::filter(NAME %in% c("Vicente Perez Rosales", "Puyehue", "Alerce Andino"))
+
+hull <- PNLagos_Rios %>% sf::st_union() %>% st_transform(crs = "+proj=tcea +lon_0=-74.7070313 +datum=WGS84 +units=m +no_defs") %>% st_buffer(10000) %>% st_convex_hull() %>% st_transform("+proj=longlat +datum=WGS84 +no_defs") %>% st_as_sf()
+```
+
+## Climate change in southern Chile
+
+In order to evaluate possible scenarios of climate change in the given area, we used a polygon comprising the Los Lagos and Los Ríos regions in Chile, and compared them using GCM compareR [@fajardo2020gcm], considering Mean Anual Temperature and Annual Precipitation. The resulting scaled table of comparisson among futures was then use to select models to be used in the project.
+
+We used the simple structure index (ssi) as implemented by the Vegan package [@Oksanen_2019; @dolnicar1999tale] to test what number of clusters (Between two and eight), was the best way to represent the 32 Compared GCMs. The best representation was five clusters, from each cluster the GCM closest to the centroid of the cluster was selected. The five selected GCMS were `r AndList(table_scaled %>% dplyr::filter(GCM != "") %>% pull(GCM))` and the selected GCMs together with the clusters are shown in figure \@ref(fig:SelectedGCMs). 
+
+
+```{r SelectedGCMs, fig.cap="In this graph we can see the scaled temperature and precipitation axis, the center of the graph represent the ensemble of all models, the five groups represent the clusters selected using kmeans for five groups, the selected GCM of each cluster is shown with a label"}
+ggplot(table_scaled, aes(x = x_axis, y = y_axis)) + 
+  geom_point(aes(color = Group)) +
+  geom_path(data = circle, aes(x = x, y = y)) + 
+  coord_equal() +
+  geom_text_repel(aes(label = GCM), nudge_y = 0.3) + 
+  geom_hline(yintercept = 0, lty = 2) +
+  geom_vline(xintercept = 0, lty = 2) +
+  theme_bw() +
+  labs(x = "Scaled Temperature Axis",
+       y = "Scaled Precipitation Axis")
+```
+
+### Present climate conditions
+
+Once the future GCM models were selected, the 30 seconds resolution maps were downloaded for 2070 and for present conditons from CHELSA [@karger2020high].
+The present conditions for the Los Lagos and Los Ríos Region are shown in Figure \@ref(fig:PresenteClima), with a close up to the 10 Km buffer surrounding the park in \@ref(fig:PresenteClimaBuffer). The region is a cold and humid area, with a range in the mean annual temperature from `r round(cellStats(Presente[[1]], min), 2)` to `r round(cellStats(Presente[[1]], max), 2)` degrees Celsius and a mean of `r round(cellStats(Presente[[1]], mean), 2)`, and a precipitation range between `r round(cellStats(Presente[[2]], min), 2)` to `r prettyNum(round(cellStats(Presente[[2]], max)),big.mark =",")` and a mean of `r prettyNum(round(cellStats(Presente[[2]], mean)),big.mark = ",")` mm a year. 
+
+```{r PresenteClima, fig.cap= "Mean anual temperature in °C (Facet A), and Annual Precipitation mm (Facet B)", out.width = "100%", out.height="100%"}
+Presente_DF <- Presente %>% as("SpatialPixelsDataFrame") %>% as.data.frame()
+
+G1 <- ggplot() + geom_raster(data = Presente_DF, aes(x = x, y = y, fill = Bio1)) + geom_sf(data = Regiones, alpha = 0, size = 0.1) + geom_sf(data = PNLagos_Rios, alpha = 0, color = "white", size = 0.1) + geom_sf(data = hull, color = "red", alpha = 0, size = 0.1)+ theme_bw(base_size = 8) + scale_fill_gradient2(name = str_wrap("Mean Annual Temperature [°C]", width = 18), high = muted("red"),
+  mid = "white",
+  low = muted("blue"),
+  midpoint = 0) + labs(x = NULL, y = NULL) + scale_x_continuous(breaks =c(-75:-72))
+
+G2 <- ggplot() + geom_raster(data = Presente_DF, aes(x = x, y = y, fill = Bio12)) + geom_sf(data = Regiones, alpha = 0, size = 0.1) + geom_sf(data = PNLagos_Rios, alpha = 0, color = "white", size = 0.1)+ geom_sf(data = hull, color = "red", alpha = 0, size = 0.1) + theme_bw(base_size = 8) + scale_fill_viridis_c(name = str_wrap("Annual Precipitation [mm]", 18)) + labs(x = NULL, y = NULL) + scale_x_continuous(breaks =c(-75:-72)) 
+
+G1 + G2 + plot_annotation(tag_levels = 'A')
+```
+
+```{r}
+Presente_Hull <- Presente %>% crop(hull) 
+
+Presente_Hull <-  Presente_Hull %>% mask(rasterize(hull, Presente_Hull[[1]]))
+
+Presente_Hull_DF <- Presente_Hull %>%  as("SpatialPixelsDataFrame") %>% as.data.frame()
+```
+
+
+The parks concidered in this proyect are in high altitude which leads to even cooler and wetter conditions, with a range from `r BestNumbers(cellStats(Presente_Hull[[1]], min))` to `r BestNumbers(cellStats(Presente_Hull[[1]], max))` and a mean of `r BestNumbers(cellStats(Presente_Hull[[1]], mean))` degrees Celsius, and a precipitation range from from `r BestNumbers(cellStats(Presente_Hull[[2]], min))` to `r BestNumbers(cellStats(Presente_Hull[[2]], max))` and a mean of `r BestNumbers(cellStats(Presente_Hull[[2]], mean))` mm as seen in figure \@ref(fig:PresenteClimaBuffer).
+
+```{r PresenteClimaBuffer, fig.cap= "Mean anual temperature in °C (Facet A), and Annual Precipitation mm (Facet B) in the three studied national parks white lines, and a 10 km buffer red line", out.width = "100%", out.height="100%"}
+
+
+G1 <- ggplot() + geom_raster(data = Presente_Hull_DF, aes(x = x, y = y, fill = Bio1)) + geom_sf(data = PNLagos_Rios, alpha = 0, color = "white", size = 0.1) + geom_sf(data = hull, color = "red", alpha = 0, size = 0.1)+ theme_bw(base_size = 8) + scale_fill_gradient2(name = str_wrap("Mean Annual Temperature [°C]", width = 18), high = muted("red"),
+  mid = "white",
+  low = muted("blue"),
+  midpoint = 0) + labs(x = NULL, y = NULL) + scale_x_continuous(breaks =seq(-72.8, -71.8, by = 0.4))
+
+G2 <- ggplot() + geom_raster(data = Presente_Hull_DF, aes(x = x, y = y, fill = Bio12)) + geom_sf(data = PNLagos_Rios, alpha = 0, color = "white", size = 0.1)+ geom_sf(data = hull, color = "red", alpha = 0, size = 0.1) + theme_bw(base_size = 8) + scale_fill_viridis_c(name = str_wrap("Annual Precipitation [mm]", 18)) + labs(x = NULL, y = NULL)+ scale_x_continuous(breaks =seq(-72.8, -71.8, by = 0.4)) 
+
+G1 + G2 + plot_annotation(tag_levels = 'A')
+```
+
+## Future scenarios
+
+### Future temperature
+
+```{r DifTemp, fig.cap= "Changes in future  mean annual temperature for the five selected GCMs, the red polygon surrounds the area of influence while the white line  demarks the limits of the three protected areas in this proyect"}
+names(Dif_Temp) <- GCMs
+names(Dif_Prec) <- GCMs
+
+Dif_Temp_DF <- Dif_Temp %>% as("SpatialPixelsDataFrame") %>% 
+  as.data.frame() %>% 
+  pivot_longer(CESM1.BGC:MPI.ESM.LR, names_to = "GCM", values_to = "Temperature")
+
+ggplot() + geom_raster(data =Dif_Temp_DF, aes(x = x, y = y, fill = Temperature)) + geom_sf(data = Regiones, alpha = 0, size = 0.1) + geom_sf(data= hull, alpha = 0, size = 0.1, color = "red") + geom_sf(data = PNLagos_Rios, alpha = 0, color = "white", size = 0.1) + facet_wrap(~GCM) + scale_fill_viridis_c(option = "inferno") + labs(x = NULL, y = NULL) + scale_x_continuous(breaks =c(-74:-72)) + theme_bw(base_size = 8)
+```
+
+As stated above, the four GCMs chosen to explore and model future scenarios are `r AndList(table_scaled %>% dplyr::filter(GCM != "") %>% pull(GCM))`. Even when this models include relatively wetter models such as `r table_scaled %>% dplyr::filter(GCM != "") %>% dplyr::filter(y_axis == max(y_axis)) %>% pull(GCM)`. On average for the whole region, the temperature will rise from `r BestNumbers(min(cellStats(Dif_Temp, mean)))` to `r BestNumbers(max(cellStats(Dif_Temp, mean)))` depending on the GCM (See figure \@ref(fig:DifTemp)), but in some areas, it the tempearture rise could be as high as `r BestNumbers(max(cellStats(Dif_Temp, max)))` degrees Celsius.
+
+As seen in figure \@ref(fig:DifTempHull), those changes are even higher within the parks and it's sorrounding areas, which means the effects of climate change might be even greater.
+
+```{r DifTempHull, fig.cap="Temperature difference for all five GCMs, for the Close up of the area of influence of the parks"}
+Dif_Temp_Hull <- Dif_Temp %>% crop(hull) 
+
+Dif_Temp_Hull <-  Dif_Temp_Hull %>% mask(rasterize(hull, Presente_Hull[[1]]))
+
+Dif_Temp_Hull_DF <- Dif_Temp_Hull %>%  as("SpatialPixelsDataFrame") %>% as.data.frame() %>% pivot_longer(CESM1.BGC:MPI.ESM.LR, names_to = "GCM", values_to = "Temperature")
+
+ggplot() + geom_raster(data =Dif_Temp_Hull_DF, aes(x = x, y = y, fill = Temperature)) + geom_sf(data= hull, alpha = 0, size = 0.1, color = "red") + geom_sf(data = PNLagos_Rios, alpha = 0, color = "white", size = 0.1) + facet_wrap(~GCM) + scale_fill_viridis_c(option = "inferno") + labs(x = NULL, y = NULL) + scale_x_continuous(breaks =seq(-72.8, -71.8, by = 0.4)) + theme_bw(base_size = 8)
+```
+
+### Future precipitation
+
+
+The change in precipitation is predicted to be much more stark, with some areas decreasing in precipitation up to `r BestNumbers(min(cellStats(Dif_Prec, min)))` as seen in figure \@ref(fig:DifPrec), this is particularly worrisome, since the ecosystems that are prevalent in the area depend on high precipitation.
+
+```{r DifPrec, fig.cap= "Changes in precipitation for the different GCMs, the red polygon surrounds the area of influence while the white line  demarks the limits of the three protected areas in this proyect"}
+Dif_Prec_DF <- Dif_Prec %>% as("SpatialPixelsDataFrame") %>% 
+  as.data.frame() %>% 
+  pivot_longer(CESM1.BGC:MPI.ESM.LR, names_to = "GCM", values_to = "Precipitation")
+
+ggplot() + geom_raster(data =Dif_Prec_DF, aes(x = x, y = y, fill = Precipitation)) + geom_sf(data = Regiones, alpha = 0, size = 0.1) + geom_sf(data= hull, alpha = 0, size = 0.1, color = "red") + geom_sf(data = PNLagos_Rios, alpha = 0, color = "white", size = 0.1) + facet_wrap(~GCM) + scale_fill_viridis_c() + labs(x = NULL, y = NULL) + scale_x_continuous(breaks =c(-74:-72)) + theme_bw(base_size = 8)
+```
+
+
+
+
+
+```{r DifPrecHull, fig.cap ="Precipitation difference for all five GCMs, for the Close up of the area of influence of the parks"}
+
+Dif_Prec_Hull <- Dif_Prec %>% crop(hull) 
+
+Dif_Prec_Hull <-  Dif_Prec_Hull %>% mask(rasterize(hull, Presente_Hull[[1]]))
+
+Dif_Prec_Hull_DF <- Dif_Prec_Hull %>%  as("SpatialPixelsDataFrame") %>% as.data.frame() %>% pivot_longer(CESM1.BGC:MPI.ESM.LR, names_to = "GCM", values_to = "Precipitation")
+
+ggplot() + geom_raster(data =Dif_Prec_Hull_DF, aes(x = x, y = y, fill = Precipitation)) + geom_sf(data= hull, alpha = 0, size = 0.1, color = "red") + geom_sf(data = PNLagos_Rios, alpha = 0, color = "white", size = 0.1) + facet_wrap(~GCM) + scale_fill_viridis_c() + labs(x = NULL, y = NULL) + scale_x_continuous(breaks =seq(-72.8, -71.8, by = 0.4)) + theme_bw(base_size = 8)
+```
+
+The range of changes between GCMs will be from from `r BestNumbers(min(cellStats(Dif_Prec, mean)))` to `r BestNumbers(max(cellStats(Dif_Prec, mean)))` mean annual precipitation for the whole area. Again the areas where there is going to be a higher drop in precipitation are mostly inside of the national parks, as seen in figure \@ref(fig:DifPrecHull), with changes in the mean annual precipitation within the are of `r BestNumbers(min(cellStats(Dif_Prec_Hull, mean)))` for the wettest models, and `r BestNumbers(max(cellStats(Dif_Prec_Hull, mean)))` for the driest models.
+
+# Vegetational formation

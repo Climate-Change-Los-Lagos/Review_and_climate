@@ -90,9 +90,80 @@
 \begin{document}
 \maketitle
 
+\hypertarget{climate-change-analisis}{%
+\section{Climate change analisis}\label{climate-change-analisis}}
 
+\hypertarget{climate-change-in-southern-chile}{%
+\subsection{Climate change in southern Chile}\label{climate-change-in-southern-chile}}
 
-\renewcommand\refname{Climate change analisis}
+In order to evaluate possible scenarios of climate change in the given area, we used a polygon comprising the Los Lagos and Los Ríos regions in Chile, and compared them using GCM compareR \citep{fajardo2020gcm}, considering Mean Anual Temperature and Annual Precipitation. The resulting scaled table of comparisson among futures was then use to select models to be used in the project.
+
+We used the simple structure index (ssi) as implemented by the Vegan package \citep{Oksanen_2019, dolnicar1999tale} to test what number of clusters (Between two and eight), was the best way to represent the 32 Compared GCMs. The best representation was five clusters, from each cluster the GCM closest to the centroid of the cluster was selected. The five selected GCMS were cesm1\_bgc, gfdl\_esm2g, ipsl\_cm5a\_lr, miroc\_esm\_chem and mpi\_esm\_lr and the selected GCMs together with the clusters are shown in figure \ref{fig:SelectedGCMs}.
+
+\begin{figure}
+\centering
+\includegraphics{Review_and_climate_files/figure-latex/SelectedGCMs-1.pdf}
+\caption{\label{fig:SelectedGCMs}In this graph we can see the scaled temperature and precipitation axis, the center of the graph represent the ensemble of all models, the five groups represent the clusters selected using kmeans for five groups, the selected GCM of each cluster is shown with a label}
+\end{figure}
+
+\hypertarget{present-climate-conditions}{%
+\subsubsection{Present climate conditions}\label{present-climate-conditions}}
+
+Once the future GCM models were selected, the 30 seconds resolution maps were downloaded for 2070 and for present conditons from CHELSA \citep{karger2020high}.
+The present conditions for the Los Lagos and Los Ríos Region are shown in Figure \ref{fig:PresenteClima}, with a close up to the 10 Km buffer surrounding the park in \ref{fig:PresenteClimaBuffer}. The region is a cold and humid area, with a range in the mean annual temperature from -5.6 to 13 degrees Celsius and a mean of 9.34, and a precipitation range between 858 to 4,537 and a mean of 2,092 mm a year.
+
+\begin{figure}
+\includegraphics[width=1\linewidth,height=1\textheight]{Review_and_climate_files/figure-latex/PresenteClima-1} \caption{Mean anual temperature in °C (Facet A), and Annual Precipitation mm (Facet B)}\label{fig:PresenteClima}
+\end{figure}
+
+The parks concidered in this proyect are in high altitude which leads to even cooler and wetter conditions, with a range from -5.6 to 12.6 and a mean of 8.12 degrees Celsius, and a precipitation range from from 1,176 to 3,410 and a mean of 2,134.51 mm as seen in figure \ref{fig:PresenteClimaBuffer}.
+
+\begin{figure}
+\includegraphics[width=1\linewidth,height=1\textheight]{Review_and_climate_files/figure-latex/PresenteClimaBuffer-1} \caption{Mean anual temperature in °C (Facet A), and Annual Precipitation mm (Facet B) in the three studied national parks white lines, and a 10 km buffer red line}\label{fig:PresenteClimaBuffer}
+\end{figure}
+
+\hypertarget{future-scenarios}{%
+\subsection{Future scenarios}\label{future-scenarios}}
+
+\hypertarget{future-temperature}{%
+\subsubsection{Future temperature}\label{future-temperature}}
+
+\begin{figure}
+\centering
+\includegraphics{Review_and_climate_files/figure-latex/DifTemp-1.pdf}
+\caption{\label{fig:DifTemp}Changes in future mean annual temperature for the five selected GCMs, the red polygon surrounds the area of influence while the white line demarks the limits of the three protected areas in this proyect}
+\end{figure}
+
+As stated above, the four GCMs chosen to explore and model future scenarios are cesm1\_bgc, gfdl\_esm2g, ipsl\_cm5a\_lr, miroc\_esm\_chem and mpi\_esm\_lr. Even when this models include relatively wetter models such as cesm1\_bgc. On average for the whole region, the temperature will rise from 1.5 to 2.28 depending on the GCM (See figure \ref{fig:DifTemp}), but in some areas, it the tempearture rise could be as high as 2.6 degrees Celsius.
+
+As seen in figure \ref{fig:DifTempHull}, those changes are even higher within the parks and it's sorrounding areas, which means the effects of climate change might be even greater.
+
+\begin{figure}
+\centering
+\includegraphics{Review_and_climate_files/figure-latex/DifTempHull-1.pdf}
+\caption{\label{fig:DifTempHull}Temperature difference for all five GCMs, for the Close up of the area of influence of the parks}
+\end{figure}
+
+\hypertarget{future-precipitation}{%
+\subsubsection{Future precipitation}\label{future-precipitation}}
+
+The change in precipitation is predicted to be much more stark, with some areas decreasing in precipitation up to -696 as seen in figure \ref{fig:DifPrec}, this is particularly worrisome, since the ecosystems that are prevalent in the area depend on high precipitation.
+
+\begin{figure}
+\centering
+\includegraphics{Review_and_climate_files/figure-latex/DifPrec-1.pdf}
+\caption{\label{fig:DifPrec}Changes in precipitation for the different GCMs, the red polygon surrounds the area of influence while the white line demarks the limits of the three protected areas in this proyect}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics{Review_and_climate_files/figure-latex/DifPrecHull-1.pdf}
+\caption{\label{fig:DifPrecHull}Precipitation difference for all five GCMs, for the Close up of the area of influence of the parks}
+\end{figure}
+
+The range of changes between GCMs will be from from -376.99 to -313.23 mean annual precipitation for the whole area. Again the areas where there is going to be a higher drop in precipitation are mostly inside of the national parks, as seen in figure \ref{fig:DifPrecHull}, with changes in the mean annual precipitation within the are of -412.29 for the wettest models, and -320.96 for the driest models.
+
+\renewcommand\refname{Vegetational formation}
 \bibliography{Biblio.bib}
 
 \end{document}
