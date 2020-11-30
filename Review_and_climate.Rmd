@@ -1,0 +1,59 @@
+---
+title: "Systematic review and climate change analysis in Los Lagos Region"
+author: "Derek Corcoran"
+date: "`r Sys.Date()`"
+output:
+  bookdown::pdf_document2:
+    citation_package: natbib
+    keep_tex: true
+    fig_caption: true
+    toc: false
+bibliography: Biblio.bib
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = F, warning = F, cache = T, error = F)
+
+library(ggrepel)
+library(patchwork)
+library(raster)
+library(scales)
+library(sf)
+library(tidyverse)
+library(kableExtra)
+```
+
+
+```{r data, include=FALSE}
+Carpeta_results <- paste0(getwd(), "/Climate_Results/")
+
+### Circulo para GCMComparer
+
+circle <- read_rds(paste0(Carpeta_results,"Circle.rds"))
+
+
+## Tabla de GCMs
+
+table_scaled <- readRDS(paste0(Carpeta_results,"table_scaled.rds"))
+
+BestNumbers <- function(x, Digits = 2, BigSep = ",", Pre = NULL){
+  x <- prettyNum(round(x, digits = Digits), big.mark = BigSep)
+  if(!is.null(Pre)){
+    x <- paste(Pre, x)
+  }
+  return(x)
+}
+
+AndList <-  function(x, Sep = "and"){
+  x <- sort(x)
+  First <- paste(x[-length(x)], collapse = ", ")
+  Second <- x[length(x)]
+  return(paste(First, Second, sep = str_pad(Sep, str_count(Sep) + 2, "both")))
+}
+
+Regiones <- read_rds("Regiones.rds")
+
+GCMs <- list.files(path = "ChelsaData/Future") %>% str_remove_all("_rcp85.rds")
+```
+
+# Climate change analisis
