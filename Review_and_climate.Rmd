@@ -53,13 +53,12 @@ This could be because from those 21 PA in the Region, `r LosLagos %>% dplyr::fil
 In addition to that, remoteness of PA can generate disconnection. Given most of the PA are located in remote places, people from developed urban centers do not have, in most of the cases, nexus with those PA and their territory [@joppa2009high]
 Another factor could be a social phenomena, where cultural changes generate a sense of not sharing a common notion of territory (Montecinos, 2009, p. 24). In the region, this could be a product of economic activities such as salmon farming, where the dependency on international markets predominates.
 
-Among the PA in Los Lagos Region, there are three Andean National Parks: Puyehue National Park (PNP), Vicente Perez Rozales National Park (VPRNP), and Alerce Andino National Park (AANP). PNP, VPRNP, and AANP as all national PA in Chile are under the supervision and administration of the National Forestry Corporation (CONAF). They count with management plans (2008, 2015, and 1997, respectively), which provide a very careful compilation of data. However, these documents have not been correctly updated and they have a lack of information with the changes that have occurred in the last years. For example, between 1995 and 2016 native forests in this area have suffered important losses because of land use changes (mostly land modification to grassland and shrubs). 
-Hence, the area presents an increment of vulnerability in front of climate change [@marquet2019biodiversidad]. 
+Among the PA in Los Lagos Region, there are three Andean National Parks: Puyehue National Park (PNP), Vicente Perez Rozales National Park (VPRNP), and Alerce Andino National Park (AANP). PNP, VPRNP, and AANP as all national PA in Chile are under the supervision and administration of the National Forestry Corporation (CONAF). They count with management plans (2008, 2015, and 1997, respectively), which provide a very careful compilation of data. However, these documents have not been correctly updated and they have a lack of information with the changes that have occurred in the last years. For example, between 1995 and 2016 native forests in this area have suffered important losses because of land-use changes (70% land modification to grassland and shrubs and 20% substitution to forestry plantations) [@marquet2019biodiversidad]. 
 
-Considering relations of PA and local communities, and the importance of the expansion of ecological knowledge to areas that resume the complexity of each PA in order to face specific perturbations or global problematic as climate change in the future, should be a fundamental step in Chile to assure a correct management and projection of PA to the future.
-This review revise the ecological literature carry out in these three protected areas and its surroundings in Los Lagos Region in order to generate a base line that allow to project scenarios of climate change to systematic conservation planning in PA.
-We made a systematic review of research searching by the names of the three PA: PNP, VPRNP, and AANP; and by the geographical area of Southern Chile.
-Doing so, we were able to identified tendencies and gaps in research developed in these three National Parks. We could defined a vision on where to focus new studies that allow systematic conservation plans that includes information to deal with climate change and ensure the biological diversity in Southern Chile.
+Considering relations of PA and local communities, and the importance of the expansion of ecological knowledge to areas that summarise the complexity of each PA in order to face specific perturbations or global problems such as climate change in the future. It should be a fundamental step in Chile to assure a correct management and projection of PA to the future.
+This review revises the ecological literature carried out in these three protected areas and its surroundings in Los Lagos Region in order to generate a base line that allows to project scenarios of climate change to systematic conservation planning in PA.
+We made a systematic review of research searching the names of the three PA: PNP, VPRNP, and AANP; and by the geographical area of Southern Chile.
+Doing so, we were able to identify tendencies and gaps in research developed in these three National Parks. We could define a vision on where to focus new studies that allow systematic conservation plans that include information to deal with climate change and ensure the biological diversity in Southern Chile.
 
 
 ## Methodology
@@ -73,7 +72,7 @@ Key components categorized articles according to area of study. This classificat
 Study location encompassed categories such as the three National Parks of interest: AANP, PNP, and  VPRNP; adjacent areas to NP: Adjacent to AANP, Adjacent to PNP, Adjacent to VPRNP; similar ecosystems to NP:  Andes of Los Rios Region, Argentinian Andes, and Neuquen in Argentina; Larger areas that comprise NP: Los Lagos Region, 2 regions, 3 regions, 4 regions,  5 regions, More than 5 regions; Global studies: Chile, Chile & Argentina; and Close urban centers: Valdivia.
 
 Methodology classified articles based in how data was collected and/or analysed. 
-Methods included data from the field: field survey, field collection (similar a survey but with samples that need further processes to be analysed, such as dendrochronology or electric fishing), field experiment (that requires modification to one or more conditions in a location, such as transplant or seedling experiments). 
+Methods included data from the field: field survey, field collection (similar to a survey but with samples that need to be further processes to be analysed, such as dendrochronology or electric fishing), field experiment (that requires modification to one or more conditions in a location, such as transplant or seedling experiments). 
 Other classifications were modeling (including data analysis such as simulations, correlational and multivariate models, and spatial models), molecular analysis (reconstruction of mt-DNA, isotopes, and genetic analysis), and reviews of literature.
 There is a category of social methods, that include both quantitative (surveys an questionnaires) and qualitative (interviews and discussion articles).
 Process category makes reference to the question behind the articles and implies which is the mechanism studied (see the list of of 47 options in Table  \@ref(tab:tabProcess)).
@@ -83,13 +82,13 @@ Process category makes reference to the question behind the articles and implies
 Pro <- DF$Process %>% unique() %>% sort() 
 Pro <- data.frame(Process = Pro, stringsAsFactors = F)
 Pro <- Pro %>% mutate(Process=case_when(Process=="runoff" ~"Runoff",  TRUE ~ Process))
-kable(Pro, booktabs = T, caption = "Processes mentioned in studies") 
+kable(Pro, booktabs = T, caption = "Processes mentioned in studies")
 ```
 
 
 Study object classification was prepared based on what is the minimum element studied in each article. This included living organisms such as humans (household combustion, people, and urban areas), animals (communities of birds, crustacean, fishes, and herpetofauna; species of Aegorhinus, craspedacusta, Dromiciops, Liolaemus, wild boar, and woodwasp), plants (aquatic plants, Chusquea, Embothrium, ferns, native vegetation, pollen, Proteaceae, Sarmienta), other organisms (such as cyanobacteria, Didymosphenia,  lichens, and protozoa), and a particular living category given its abundance of publications is forest communities (with focus in one species Austrocedrus, *F. cupressoides*, and Nothofagus; or in more diverse environments as coihue-Rauli-Tepa, forest, native forest, and evergreen trees).
 
-Study objects also included non-living organisms, focusing in geographic elements (basins, groundwater Storage, lakes, runoff, streams, watershed, and also soil and regional subdivision), physical conditions (fires, precipitation, particulate matter, rock art), and data bases.
+Study objects also included non-living organisms, focusing in geographic elements (basins, groundwater Storage, lakes, runoff, streams, watersheds, and also soil and regional subdivision), physical conditions (fires, precipitation, particulate matter, rock art), and data bases.
     
 In order to centered this review in ecological knowledge carry out in the area of study, we focus our search in Los Lagos region research and Andean studies in surrounded areas. We left out coastal systems within the region, specially research based on Chiloé island because local communities keep a traditional way of life  and agricultural systems. This was even proposed as Global Importance Agricultural Heritage System (GIAHS) by the Food and Agricultural Organization [@FAO2003Chiloe; @FAO2008Chiloe].
 
