@@ -9,6 +9,8 @@ output:
     fig_caption: true
     toc: false
 bibliography: Biblio.bib
+header-includes:
+    - \usepackage[round]{natbib}
 ---
 
 ```{r setup, include=FALSE}
@@ -213,4 +215,107 @@ ggplot() + geom_raster(data =Dif_Prec_Hull_DF, aes(x = x, y = y, fill = Precipit
 
 The range of changes between GCMs will be from from `r BestNumbers(min(cellStats(Dif_Prec, mean)))` to `r BestNumbers(max(cellStats(Dif_Prec, mean)))` mean annual precipitation for the whole area. Again the areas where there is going to be a higher drop in precipitation are mostly inside of the national parks, as seen in figure \@ref(fig:DifPrecHull), with changes in the mean annual precipitation within the are of `r BestNumbers(min(cellStats(Dif_Prec_Hull, mean)))` for the wettest models, and `r BestNumbers(max(cellStats(Dif_Prec_Hull, mean)))` for the driest models.
 
-# Vegetational formation
+## Vegetational formation
+
+```{r}
+
+Formation_Change <- read_rds("Formation_Change.rds")
+```
+
+
+We used @luebert2009depuracion to check current vegetational formations as seen in figure \@ref(fig:VegHull)
+
+```{r VegHull, fig.cap= "Vegetational formation in the influence area of the parks"}
+Pisos_hull <- read_rds("Pisos_hull.rds")
+
+Pisos_hull <- Pisos_hull %>% mutate(PISO = str_wrap(PISO, width = 20))
+
+ggplot() + geom_sf(data = Pisos_hull, aes(fill = PISO), size = 0.01) +  geom_sf(data = PNLagos_Rios, alpha = 0, color = "white", size = 0.5)+ theme(legend.position = "bottom") + scale_fill_viridis_d(name = "Vegetation") + theme_bw(base_size = 8) + scale_x_continuous(breaks =seq(-72.8, -71.8, by = 0.4))
+```
+
+### Climatic analogues
+
+As seen above, changes in precipitation will be very large. Because of that, we checked which areas in the present have the same climate as it is predicted to be in the future in the national parks and sorrounding areas using the analouges R package [@ramirez2011climate]. After doing that, the current vegetational formations of those areas were checked in order to determine possible future vegetation in the area. With that we might better understand the biological consecuences of climate change.
+  
+```{r}
+  NewFormations <- Formation_Change %>% pivot_longer(cols = -c("Rank")) %>% 
+    dplyr::filter(!(value %in% Formation_Change$Present)) %>% pull(value) %>% unique()
+  
+  Desapeared <- Formation_Change %>% pivot_longer(cols = -c("Rank")) %>% 
+    dplyr::filter(name != "Present") %>% pull(value) %>% unique()
+  
+Desapeared <- Formation_Change$Present[!(Formation_Change$Present %in% Desapeared)]
+```
+
+
+Currently in the National Parks and sorrouding areas, the five most common Vegetational formations are `r AndList(Formation_Change$Present)`, and in the future, new vegetational formations that would be part of the five most common ones would include `r AndList(NewFormations)`. Of the current five most common formations, the ones that would be reduced as far as that they would either be lost completely or become very rare are `r AndList(Desapeared)`
+
+```{r TablaForm}
+Formation_Change <- read_rds("Formation_Change.rds") %>% mutate_all(~str_wrap(.x, width = 8))
+
+kable(Formation_Change, booktabs = T, caption = "Top five vegetation formations for the present and for the different GCMs acording to the analogous climate analysis") %>% kable_styling(font_size = 5, full_width = F)
+```
+
+
+## Land use
+
+We used @zhao2016detailed landuse layer, specifically developed for Chile. This is a 30 meter resolution, that 
+
+```{r}
+
+Codes <- read_csv("https://raw.githubusercontent.com/derek-corcoran-barrios/UsosDeSueloChile/master/Codes.csv")
+
+LandUse <- raster("/home/derek/Documents/El_Soldado/LC_CHILE_2014_b.tif")
+
+Seldom_Hull <- hull %>% st_transform("+proj=utm +zone=19 +south +datum=WGS84 +units=m +no_defs")
+
+LandUse <- LandUse %>% crop(Seldom_Hull)
+
+LandUse <- LandUse %>% mask(rasterize(Seldom_Hull, LandUse)) 
+
+LandUse2 <- projectRaster(from = LandUse, to = Presente_Hull[[1]], method = "ngb")
+
+LandUse_DF <- LandUse2 %>% as("SpatialPixelsDataFrame") %>% 
+  as.data.frame() %>% 
+  rename(Code = LC_CHILE_2014_b) %>% 
+  left_join(Codes) %>% 
+  dplyr::filter(!is.na(Primary_English))
+
+
+ggplot() + geom_raster(data =LandUse_DF, aes(x = x, y = y, fill =Primary_English)) + scale_fill_viridis_d(name = "Primary landuse") + labs(x = NULL, y = NULL) +
+  geom_sf(data = PNLagos_Rios, alpha = 0, color = "white", size = 0.5) + scale_x_continuous(breaks =seq(-72.8, -71.8, by = 0.4)) + theme_bw(base_size = 8)
+```
+
+
+```{r}
+ggplot() + geom_raster(data =LandUse_DF, aes(x = x, y = y, fill =Secondary_English)) + scale_fill_viridis_d(name = "Secondary landuse") + labs(x = NULL, y = NULL) +
+  geom_sf(data = PNLagos_Rios, alpha = 0, color = "white", size = 0.5) + scale_x_continuous(breaks =seq(-72.8, -71.8, by = 0.4)) + theme_bw(base_size = 8)
+```
+
+
+```{r}
+LandUse_DF2 <- LandUse_DF %>% group_by(Primary_English) %>%
+    summarise(n= n()) %>% 
+  mutate(Percentage = round(100*(n/sum(n)),2)) %>% 
+  dplyr::select(-n) %>% 
+  arrange(desc(Percentage)) %>% 
+  rename(`Primary landuse` = Primary_English) %>%
+  dplyr::filter(Percentage >= 1)
+
+kable(LandUse_DF2, booktabs = T) %>% kable_styling()
+```
+
+```{r}
+LandUse_DF3 <- LandUse_DF %>% group_by(Secondary_English) %>%
+    summarise(n= n()) %>% 
+  mutate(Percentage = round(100*(n/sum(n)),2)) %>% 
+  dplyr::select(-n) %>% 
+  arrange(desc(Percentage)) %>% 
+  rename(`Secondary landuse` = Secondary_English) %>%
+  dplyr::filter(Percentage >= 1)
+
+kable(LandUse_DF3, booktabs = T) %>% kable_styling()
+```
+
+
+# References

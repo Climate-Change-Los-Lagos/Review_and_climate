@@ -66,6 +66,7 @@
 \def\fps@figure{htbp}
 \makeatother
 
+\usepackage[round]{natbib}
 \usepackage{booktabs}
 \usepackage{longtable}
 \usepackage{array}
@@ -163,7 +164,117 @@ The change in precipitation is predicted to be much more stark, with some areas 
 
 The range of changes between GCMs will be from from -376.99 to -313.23 mean annual precipitation for the whole area. Again the areas where there is going to be a higher drop in precipitation are mostly inside of the national parks, as seen in figure \ref{fig:DifPrecHull}, with changes in the mean annual precipitation within the are of -412.29 for the wettest models, and -320.96 for the driest models.
 
-\renewcommand\refname{Vegetational formation}
+\hypertarget{vegetational-formation}{%
+\subsection{Vegetational formation}\label{vegetational-formation}}
+
+We used \citet{luebert2009depuracion} to check current vegetational formations as seen in figure \ref{fig:VegHull}
+
+\begin{figure}
+\centering
+\includegraphics{Review_and_climate_files/figure-latex/VegHull-1.pdf}
+\caption{\label{fig:VegHull}Vegetational formation in the influence area of the parks}
+\end{figure}
+
+\hypertarget{climatic-analogues}{%
+\subsubsection{Climatic analogues}\label{climatic-analogues}}
+
+As seen above, changes in precipitation will be very large. Because of that, we checked which areas in the present have the same climate as it is predicted to be in the future in the national parks and sorrounding areas using the analouges R package \citep{ramirez2011climate}. After doing that, the current vegetational formations of those areas were checked in order to determine possible future vegetation in the area. With that we might better understand the biological consecuences of climate change.
+
+Currently in the National Parks and sorrouding areas, the five most common Vegetational formations are Deciduous forest, Evergreen forest, Laurel forest, Low altitude scrubland and Resinous forest, and in the future, new vegetational formations that would be part of the five most common ones would include Absolute desert, Desert scrub, Sclerophyllous forest and Thorny forest. Of the current five most common formations, the ones that would be reduced as far as that they would either be lost completely or become very rare are Evergreen forest, Low altitude scrubland and Resinous forest
+
+\begin{table}
+
+\caption{\label{tab:TablaForm}Top five vegetation formations for the present and for the different GCMs acording to the analogous climate analysis}
+\centering
+\fontsize{5}{7}\selectfont
+\begin{tabular}[t]{lllllll}
+\toprule
+Rank & Present & CESM1-BGC & GFDL-ESM2G & IPSL-CM5A-LR & MIROC-ESM-CHEM & MPI-ESM-LR\\
+\midrule
+1 & Evergreen
+forest & Deciduous
+forest & Deciduous
+forest & Deciduous
+forest & Deciduous
+forest & Deciduous
+forest\\
+2 & Deciduous
+forest & Sclerophyllous
+forest & Sclerophyllous
+forest & Sclerophyllous
+forest & Sclerophyllous
+forest & Sclerophyllous
+forest\\
+3 & Laurel
+forest & Desert
+scrub & Thorny
+forest & Desert
+scrub & Desert
+scrub & Desert
+scrub\\
+4 & Resinous
+forest & Thorny
+forest & Desert
+scrub & Thorny
+forest & Thorny
+forest & Thorny
+forest\\
+5 & Low
+altitude
+scrubland & Laurel
+forest & Laurel
+forest & Absolute
+desert & Laurel
+forest & Laurel
+forest\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\hypertarget{land-use}{%
+\subsection{Land use}\label{land-use}}
+
+We used \citet{zhao2016detailed} landuse layer, specifically developed for Chile. This is a 30 meter resolution, that
+
+\includegraphics{Review_and_climate_files/figure-latex/unnamed-chunk-4-1.pdf}
+
+\includegraphics{Review_and_climate_files/figure-latex/unnamed-chunk-5-1.pdf}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{lr}
+\toprule
+Primary landuse & Percentage\\
+\midrule
+forests & 59.17\\
+grasslands & 12.95\\
+Scrub & 10.24\\
+Water bodies & 9.34\\
+bare land & 6.93\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{lr}
+\toprule
+Secondary landuse & Percentage\\
+\midrule
+Native Broadleaf renoval & 39.45\\
+Native Broad Leaf primary & 18.63\\
+Scrub & 10.11\\
+Lagos & 8.97\\
+grasslands annual & 8.43\\
+\addlinespace
+Rocks rocky soils & 5.04\\
+other Grasslands & 4.40\\
+Rocky soil gravels & 1.85\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\renewcommand\refname{References}
 \bibliography{Biblio.bib}
 
 \end{document}
