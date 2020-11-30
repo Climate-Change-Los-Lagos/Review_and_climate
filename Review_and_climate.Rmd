@@ -7,7 +7,7 @@ output:
     citation_package: natbib
     keep_tex: true
     fig_caption: true
-    toc: false
+    toc: true
 bibliography: Biblio.bib
 header-includes:
     - \usepackage[round]{natbib}
@@ -44,16 +44,16 @@ This is why the last decades aspects such as economic limitations and the impact
 
 South America has one of the highest proportions of pa area in the world (15.9%, @ProtectedAreas).
 In Chile, there are 211 PA in its extension. From those, 187 have national jurisdiction and only 24 international. 
-In southern Chile, Los Lagos Region is named given this region has the largest proportion of lake's area in the country, with 52 lakes over 3 Km2, and a total area of	2,850 Km2. It has a population of 828,708 [@Censo2017] and an extension of 48,583.60 Km2.
+In southern Chile, Los Lagos Region is named given this region has the largest proportion of lake's area in the country, with 52 lakes over 3 $Km^2$, and a total area of	2,850 $Km^2$. It has a population of 828,708 [@Censo2017] and an extension of 48,583.60 $Km^2$.
 This region bases its economy in activities related to primary sectors: livestock, aquaculture and forestry industry [@BNC_LosLagos]. Even more, Los Lagos Region presents one of the biggest growth in fisheries and aquaculture growth in comparison with the rest of the country during the last 30 years [@Soto-alvaradoDesarrollo]. 
 
-According to @ProtectedAreas, Los Lagos Region has 21 PA in 15,777 Km2 of surface.
+According to @ProtectedAreas, Los Lagos Region has 21 PA with 15,777 $Km^2$ of surface.
 An even when includes a large part of the territory, there has been a disconnection with local communities.
 This could be because from those 21 PA in the Region, `r LosLagos %>% dplyr::filter(DESIG %in% c("Monumento Natural", "Parque Nacional")) %>% nrow()` correspond to National Parks (NP) and Natural Monuments (NM) which are IUCN categories that reinforce strict conservation [@dudley2008guidelines]. 
-In addition to that, remoteness of PA can generate disconnection. Given most of the PA are located in remote places, people from developed urban centers do not have, in most of the cases, nexus with PA and their territory [@joppa2009high]
-Another factor could be a social phenomena, where cultural changes as a product of economic activities such as salmon farming, where the dependency of international markets predominates, transform people in this region do not share a common notion of territory or a regional common agenda (Montecinos, 2009, p. 24)
+In addition to that, remoteness of PA can generate disconnection. Given most of the PA are located in remote places, people from developed urban centers do not have, in most of the cases, nexus with those PA and their territory [@joppa2009high]
+Another factor could be a social phenomena, where cultural changes generate a sense of not sharing a common notion of territory (Montecinos, 2009, p. 24). In the region, this could be a product of economic activities such as salmon farming, where the dependency on international markets predominates.
 
-Among the PA in Los Lagos Region, there are three Andean National Parks: Puyehue National Park (PNP), Vicente Perez Rozales National Park (VPRNP), and Alerce Andino National Park (AANP). PNP, VPRNP, and AANP as all national PA in Chile are under the supervision and administration of the National Forestry Corporation (CONAF). They count with management plans (2008, 2015, and 1997, respectively), which provides a very careful compilation of data. However, these documents have not been correctly updated and they have a lack of information with the changes that have occurred in the last years. For example, between 1995 and 2016 native forests in this area have suffer important losses because of land use changes (mostly land modification to grassland and shrubs, and substitution). 
+Among the PA in Los Lagos Region, there are three Andean National Parks: Puyehue National Park (PNP), Vicente Perez Rozales National Park (VPRNP), and Alerce Andino National Park (AANP). PNP, VPRNP, and AANP as all national PA in Chile are under the supervision and administration of the National Forestry Corporation (CONAF). They count with management plans (2008, 2015, and 1997, respectively), which provide a very careful compilation of data. However, these documents have not been correctly updated and they have a lack of information with the changes that have occurred in the last years. For example, between 1995 and 2016 native forests in this area have suffered important losses because of land use changes (mostly land modification to grassland and shrubs). 
 Hence, the area presents an increment of vulnerability in front of climate change [@marquet2019biodiversidad]. 
 
 Considering relations of PA and local communities, and the importance of the expansion of ecological knowledge to areas that resume the complexity of each PA in order to face specific perturbations or global problematic as climate change in the future, should be a fundamental step in Chile to assure a correct management and projection of PA to the future.
@@ -87,7 +87,7 @@ kable(Pro, booktabs = T, caption = "Processes mentioned in studies")
 ```
 
 
-Study object classification was prepared based on what is the minimum element studied in each article. This included living organisms such as humans (household combustion, people, and urban areas), animals (communities of birds, crustacean, fishes, and herpetofauna; species of Aegorhinus, craspedacusta, Dromiciops, Liolaemus, wild boar, and woodwasp), plants (aquatic plants, Chusquea, Embothrium, ferns, native vegetation, pollen, Proteaceae, Sarmienta), other organims (such as cyanobacteria, Didymosphenia,  lichens, and protozoa), and a particular living category given its abundance of publications is forest communities (with focus in one species Austrocedrus, *F. cupressoides*, and Nothofagus; or in more diverse environments as coihue-Rauli-Tepa, forest, native forest, and evergreen trees).
+Study object classification was prepared based on what is the minimum element studied in each article. This included living organisms such as humans (household combustion, people, and urban areas), animals (communities of birds, crustacean, fishes, and herpetofauna; species of Aegorhinus, craspedacusta, Dromiciops, Liolaemus, wild boar, and woodwasp), plants (aquatic plants, Chusquea, Embothrium, ferns, native vegetation, pollen, Proteaceae, Sarmienta), other organisms (such as cyanobacteria, Didymosphenia,  lichens, and protozoa), and a particular living category given its abundance of publications is forest communities (with focus in one species Austrocedrus, *F. cupressoides*, and Nothofagus; or in more diverse environments as coihue-Rauli-Tepa, forest, native forest, and evergreen trees).
 
 Study objects also included non-living organisms, focusing in geographic elements (basins, groundwater Storage, lakes, runoff, streams, watershed, and also soil and regional subdivision), physical conditions (fires, precipitation, particulate matter, rock art), and data bases.
     
@@ -276,6 +276,143 @@ Physical conditions reunited study objects in a variety from environmental condi
 
 #### Hydrology
 
+```{r Hydrology, fig.height=7, fig.width=10, fig.cap="Articles classified as Hydrological studies. A, study areas. B, Methodologies applied. C, study objects."}
+DF_Hydro <- DF %>%  group_by(Area.of.study2, Process, General_methods, General_object) %>% summarise(n = n()) %>% ungroup() %>%
+  dplyr::filter(Area.of.study2== "Hydrology") #%>% dplyr::filter(!is.na(General_methods))
+
+Hydro1 <- ggplot(DF_Hydro) + geom_col(aes(x = Process, y=n), fill="#d8b365") +labs(y="Number of articles", x=" ")  + theme_classic()+   theme(text=element_text(size=18,  family="Times"))+ theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) 
+Hydro2 <- ggplot(DF_Hydro) + geom_col(aes(x = General_methods, y=n), fill="#d8b365") +labs(y="Number of articles", x=" ")  + theme_classic()+   theme(text=element_text(size=18,  family="Times"))+ theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) 
+Hydro3 <- ggplot(DF_Hydro) + geom_col(aes(x = General_object, y=n), fill="#5ab4ac") +labs(y="Number of articles", x=" ")  + theme_classic()+   theme(text=element_text(size=18,  family="Times"))+ theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=0.5)) + ylim(c(0,8))
+(Hydro1 + Hydro2)/Hydro3 + plot_annotation(tag_levels = 'A')
+```
+
+From the total of articles focused on hydrology (Fig \@ref(fig:Hydrology)), most of the processes studied are related to water flows (flow prediction, infiltration, and runoff with a total of 5 articles) and landscape (forest characterization, LULC and topography with 4 articles).
+Data from the field (including both field collection and experiments) reaches 5 articles, same as modeling as a methodological resources.
+In terms of objects of study, they are mostly geographic elements (8 articles), where half of them studied lakes and precipitation. Physical conditions where only mentioned in 3 articles, all of them studied precipitations.
+
+
+#### Ecosystem functioning and services
+
+```{r Ecosys, fig.height=7, fig.width=10, fig.width=9, fig.cap="Articles classified as Ecosystem functioning and services studies. A, study areas. B, Methodologies applied. C, study objects."}
+DF_Ecosys <- DF %>%  group_by(Area.of.study2, Process, General_methods, General_object) %>% summarise(n = n()) %>% ungroup() %>%
+  dplyr::filter(Area.of.study2== "Ecosystem func. & servic.") %>% mutate(General_object= str_wrap(General_object,10)) 
+#%>% dplyr::filter(!is.na(Area.of.study))
+
+Ecosys1 <- ggplot(DF_Ecosys) + geom_col(aes(x = Process, y=n), fill="#d8b365") +labs(y="Number of articles", x=" ")  + theme_classic()+   theme(text=element_text(size=18,  family="Times"))+ theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) 
+Ecosys2 <- ggplot(DF_Ecosys) + geom_col(aes(x = General_methods, y=n), fill="#d8b365") +labs(y="Number of articles", x=" ")  + theme_classic()+   theme(text=element_text(size=18,  family="Times"))+ theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) 
+Ecosys3 <- ggplot(DF_Ecosys) + geom_col(aes(x = General_object, y=n), fill="#5ab4ac") +labs(y="Number of articles", x=" ")  + theme_classic()+   theme(text=element_text(size=18,  family="Times"))+ theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=0.5)) 
+(Ecosys1 + Ecosys2)/Ecosys3 + plot_annotation(tag_levels = 'A')
+```
+
+Ecosystem functioning and services are very diverse in processes studied and aspects related to growth (21 articles), regeneration (9 articles), and succession (6 articles) were the most frequent to find. In terms of methods used, most of the data comes from the field (90%), being the field survey the most adopted by researchers (25 articles), second field collection with 15 articles and third field experiment with 14 articles.
+Study objects in this area are mostly related to forest communities (40 articles). From those, it highlights Nothofagus forests and native forest (20 and 15 articles, respectively). 
+
+
+#### Freshwater biodiversity
+
+```{r Fresh, fig.height=7, fig.width=10, fig.cap="Articles classified as Freshwater biodiversity studies. A, study areas. B, Methodologies applied. C, study objects."}
+DF_Fresh <- DF %>%  group_by(Area.of.study2, Process, General_methods, General_object) %>% summarise(n = n()) %>% ungroup() %>%
+  dplyr::filter(Area.of.study2== "Freshwater biodiversity") %>% mutate(Process= str_wrap(Process, 20))
+# %>% dplyr::filter(!is.na(Area.of.study))
+
+Fresh1 <- ggplot(DF_Fresh) + geom_col(aes(x = Process, y=n), fill="#d8b365") +labs(y="Number of articles", x=" ")  + theme_classic()+   theme(text=element_text(size=18,  family="Times"))+ theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) 
+Fresh2 <- ggplot(DF_Fresh) + geom_col(aes(x = General_methods, y=n), fill="#d8b365") +labs(y="Number of articles", x=" ")  + theme_classic()+   theme(text=element_text(size=18,  family="Times"))+ theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) 
+Fresh3 <- ggplot(DF_Fresh) + geom_col(aes(x = General_object, y=n), fill="#5ab4ac") +labs(y="Number of articles", x=" ")  + theme_classic()+   theme(text=element_text(size=18,  family="Times"))+ theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=0.5)) 
+(Fresh1 + Fresh2)/Fresh3 + plot_annotation(tag_levels = 'A')
+```
+Freshwater biodiversity studies focuses mostly in invasion processes (4 articles). Additionally, field collection is the most registered method used (6 articles), this category includes particular activities such as electric fishing and sampling stations. 
+Object of studies are centered in living organisms with a 90% of the articles, among them most of the articles studied animals (5 articles, mostly fishes), and other organisms (3 articles, including cyanobacterias, Didymosphenia, and protozoa).
+
+#### Social-ecological
+
+```{r Social, fig.height=7, fig.width=10, fig.cap="Articles classified as Social-ecological studies. A, study areas. B, Methodologies applied. C, study objects."}
+DF_Social <- DF %>%  group_by(Area.of.study2, Process, General_methods, General_object) %>% summarise(n = n()) %>% ungroup() %>%
+  dplyr::filter(Area.of.study2== "Social-ecology") %>% mutate(Process= str_wrap(Process, 20)) %>% mutate(General_methods= str_wrap(General_methods, 15)) 
+  
+#%>% mutate(Area.of.study= str_wrap(Area.of.study, 24)) %>% dplyr::filter(!is.na(Area.of.study))
+
+Social1 <- ggplot(DF_Social) + geom_col(aes(x = Process, y=n), fill="#d8b365") +labs(y="Number of articles", x=" ")  + theme_classic()+   theme(text=element_text(size=18,  family="Times"))+ theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) 
+Social2 <- ggplot(DF_Social) + geom_col(aes(x = General_methods, y=n), fill="#d8b365") +labs(y="Number of articles", x=" ")  + theme_classic()+   theme(text=element_text(size=18,  family="Times"))+ theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) 
+Social3 <- ggplot(DF_Social) + geom_col(aes(x = General_object, y=n), fill="#5ab4ac") +labs(y="Number of articles", x=" ")  + theme_classic()+   theme(text=element_text(size=18,  family="Times"))+ theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=0.5)) 
+(Social1 + Social2)/Social3 + plot_annotation(tag_levels = 'A')
+```
+
+Social-ecological research is scarce and processes studied are diverse. However there is a notable environmental concern reflected in aspects as collective action, conservation, participation and political-ecology that involve more than a half of the studies. Methodology involved in this studies are mostly social methods (5 articles), which included quantitative and qualitative such as people's surveys, interviews and articles of discussion based on ethnography, and they are all based in research on people.
+
+#### Climate and environment	
+
+```{r Climate, fig.height=7, fig.width=10, fig.cap="Articles classified as Climate and environment studies. A, study areas. B, Methodologies applied. C, study objects."}
+DF_Climate <- DF %>%  group_by(Area.of.study2, Process, General_methods, General_object) %>% summarise(n = n()) %>% ungroup() %>%
+  dplyr::filter(Area.of.study2== "Climate and environment") %>% mutate(Process= str_wrap(Process, 20)) %>% mutate(General_methods= str_wrap(General_methods, 15)) 
+  
+Climate1 <- ggplot(DF_Climate) + geom_col(aes(x = Process, y=n), fill="#d8b365") +labs(y="Number of articles", x=" ")  + theme_classic()+   theme(text=element_text(size=18,  family="Times"))+ theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) 
+Climate2 <- ggplot(DF_Climate) + geom_col(aes(x = General_methods, y=n), fill="#d8b365") +labs(y="Number of articles", x=" ")  + theme_classic()+   theme(text=element_text(size=18,  family="Times"))+ theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +ylim(0,7)
+Climate3 <- ggplot(DF_Climate) + geom_col(aes(x = General_object, y=n), fill="#5ab4ac") +labs(y="Number of articles", x=" ")  + theme_classic()+   theme(text=element_text(size=18,  family="Times"))+ theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=0.5)) 
+(Climate1 + Climate2)/Climate3 + plot_annotation(tag_levels = 'A')
+```
+
+Climate and environmental area is diverse and showed focus in studies related to pollution with a component of social studies and climate in different scales and times. Among the processes studied, pollution is the most mentioned (6 articles), however the amount of publications centered in climate is not less (current climate 2 articles, climate change 1 article, past climate change 3 articles). Methods used are mostly collections from the field and modeling (41 and 29%, respectively). Study objects are diverse and involved data bases (5 articles with fire and temperature records or spatial projections), geographic elements (4 articles, including regional subdivision, lakes and soil), humans (3 articles including people and household combustion), physical conditions (3 articles, including precipitation, fires and particulate matter)
+
+#### Other key components 
+
+```{r Species, fig.height=7, fig.width=10, fig.cap="Articles classified as Species and distribution studies. A, study areas. B, Methodologies applied. C, study objects."}
+DF_Species <- DF %>%  group_by(Area.of.study2, Process, General_methods, General_object) %>% summarise(n = n()) %>% ungroup() %>%
+  dplyr::filter(Area.of.study2== "Species and distribution") %>% mutate(Process= str_wrap(Process, 20)) %>% mutate(General_methods= str_wrap(General_methods, 15)) 
+  
+Species1 <- ggplot(DF_Species) + geom_col(aes(x = Process, y=n), fill="#d8b365") +labs(y="Number of articles", x=" ")  + theme_classic()+   theme(text=element_text(size=18,  family="Times"))+ theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) 
+Species2 <- ggplot(DF_Species) + geom_col(aes(x = General_methods, y=n), fill="#d8b365") +labs(y="Number of articles", x=" ")  + theme_classic()+   theme(text=element_text(size=18,  family="Times"))+ theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +ylim(0,3)
+Species3 <- ggplot(DF_Species) + geom_col(aes(x = General_object, y=n), fill="#5ab4ac") +labs(y="Number of articles", x=" ")  + theme_classic()+   theme(text=element_text(size=18,  family="Times"))+ theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=0.5)) 
+#(Species1 + Species2)/Species3 + plot_annotation(tag_levels = 'A')
+```
+
+```{r Paleo, fig.height=7, fig.width=10, fig.cap="Articles classified as Archaeology and Paleoecology studies. A, study areas. B, Methodologies applied. C, study objects."}
+DF_Paleo <- DF %>%  group_by(Area.of.study2, Process, General_methods, General_object) %>% summarise(n = n()) %>% ungroup() %>%
+  dplyr::filter(Area.of.study2== "Archaeology and Paleoecology") %>% mutate(Process= str_wrap(Process, 20)) %>% mutate(General_methods= str_wrap(General_methods, 15)) 
+  
+Paleo1 <- ggplot(DF_Paleo) + geom_col(aes(x = Process, y=n), fill="#d8b365") +labs(y="Number of articles", x=" ")  + theme_classic()+   theme(text=element_text(size=18,  family="Times"))+ theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) 
+Paleo2 <- ggplot(DF_Paleo) + geom_col(aes(x = General_methods, y=n), fill="#d8b365") +labs(y="Number of articles", x=" ")  + theme_classic()+   theme(text=element_text(size=18,  family="Times"))+ theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +ylim(0,1)
+Paleo3 <- ggplot(DF_Paleo) + geom_col(aes(x = General_object, y=n), fill="#5ab4ac") +labs(y="Number of articles", x=" ")  + theme_classic()+   theme(text=element_text(size=18,  family="Times"))+ theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=0.5)) 
+#(Paleo1 + Paleo2)/Paleo3 + plot_annotation(tag_levels = 'A')
+```
+
+
+Species and distribution area focused mostly in distribution of species, phylogeography ans genetic variability (67% of the articles). More than a half used data from the field and all of the studies found centered in animals. In contrast, archaeology and paleoecology area presented only two articles, one focused in iconography (rock art) and the other centered in past distributions of native forest.
+
+## Discussion 
+
+This review provides insight into in ecological studies carry out in three PA: PNP, VPRNP, AANP, and their surrounded geographical areas, that allow to create a baseline of ecological knowledge. Doing so, we were able to identified tendencies and gaps in research developed in these area, in order gather the information needed to generate climate change projections and create systematic conservation plans that ensure the biological diversity in Southern Chile.
+
+The results indicated that most of the studies were focused in ecosystems functioning and services and the other areas of research are poorly studied. There is a gap in social-ecological studies that includes local communities perceptions of NP and their relationship in terms of interactions.
+Climate change have been mentioned, but mostly considering aspects of the past and related to local perturbations. This is because the area of study has been continuously modified by natural events such as volcanic activity, with  volcanic centers such as Puyehue (2,240 m in PNP), Cordón Caulle (2,236 m; in PNP), Tronador (3,565 m; in VPRNP), Osorno (2,661 m; adjacent to VPRNP) [@petit1999cronologia; @SternVolcanism], and earthquakes as Valdivia in 1960 [@melnick2018back]. 
+
+There is robust research area focused in ecosystem functioning and services. These studies are mostly centered in native forest, where Nothofagus regeneration dynamics is an important point of reference [@VEBLEN1979nothofagus; @Pollmann2004Nothofagus; @Soto2017nothofagus]. 
+The increment of this studies are important given the development of forestry in southern Chile. 
+Although high intensive forestry is centered in plantations of exotic species such as Pinus radiata and Eucalyptus, new approaches are considering changes in forestry and landscape management of forest plantations. This includes recovery of native forest patches [@salas2016forest] and there is also growing forestry activity applied to natural forests.
+
+Even thought the area of study presents a large number of articles related to forest and its regeneration, there are very few studies related to their threats, particularly on fire activity.
+This generate a gap in what is relevant to the area of study because the structure and composition of forest plantations (which are extensive in the area) promotes more fires than native forest of Nothofagus [@Gonzalez2018Mega; @McWethy2018fire].
+Even thought the area of study presents a large number of articles related to forest and its regeneration, there are very few studies related to their threats, particularly on fire activity.
+This generate a gap in what is relevant to the area of study because the structure and composition of forest plantations (which are extensive in the area) promotes more fires than native forest of Nothofagus [@Gonzalez2018Mega; @McWethy2018fire]. Fire events in similar areas (low access, topography, and climate) have covered large areas and affected native ecosystems. Fires in Torres del Paine National Park in 2012 (17,000 ha), China Muerta National Reserve in 2015 (3,700 ha), and Colonia Sur, Cochrane in 2019 (15,000 ha) were registered as very difficult to control  [@Arroyo2019COP]. 
+
+The regions that were most affected by fires during the MD were Maule, Biobio, and Araucania (35 to 39°S) that concentrate 75% of forest plantations in Chile. Although both maximum temperatures and precipitation are drivers of fire activity, analysis indicates that the sustained rainfall deficit during 2010 and 2015 was the most critical factor in the enhanced fire activity [@Gonzalez2018Mega]. 
+
+
+From the few studies found in social-ecological area, there are some characterizations of local actors and their relation with NP. 
+@SozaAmigoTurism studied the movement of people between urban centers and PNP. Here, the authors evaluated the
+connection with PNP with three nearby cities: Valdivia, Osorno, and Puerto Montt with 154,716; 147,826 and 220,143 of urban population respectively [@Censo2017].
+The results show that the changes in the economic structure had improve the main sectors of urban centers, weakening the potential development of the NP. Especially the lacks of connectivity development and the small supply of good and services of the NP are the main constraint that arise from the analysis to increase the number and length of visits. 
+A map of local actors developed by @mardones_social and their network properties showed high fragmentation of social network according to economic sectors (agriculture, artisan fisheries, tourism, among others) and low participation and separation from the PA which has not incorporated the community.
+Both studies seems to demonstrate a sentiment described in local sociology, that provinces in this region do not share a common notion of territory or a regional common agenda. This has been explain as cultural change as a product of economic activities such as salmon farming, where the dependency of international markets predominates (Montecinos, 2009, p.24). The lack of participation is also a reflection of a bad distribution of equity, and refers to the fair distribution of benefits of PA [@zafra2019progress] and is one of the AICHI targets for PA.
+
+Among freshwater diversity articles, there are contributions with description of species either by studies on invasions [@Urrutia2017invasive; @Esse2018spectral; @Fuentes2019lakes], distribution of native species [@Zapata2008Protozoa; @Unmack2009hatcheria] or more specific aspects such as parasitation in fishes [@GeorgeNascimento2009] and feeding [@Beltran2012dietary]. Among the contributions made by studies in hydrology, there are some characterization of lakes through sedimentation [organic matter preserved in a lake and its watershed: @Bertrand2010bulk; environmental impacts associated with increasing industrial activities and land degradation: @Fagel2010geochemical] and infiltration of precipitation [hydrochemical fluxes in a Nothofagus pumilio forest: @Godoy1999Hydrochemical; chemical composition of bulk precipitation: @Godoy2001precip], with the last two studies carry out in PNP. There are some more research regarding hydrology, however they describe processes close to the coast of Los Lagos and Los Rios Regions in the valdivian forest [@LittleWatershed]. Despite these contributions, the number of studies in freshwater biodiversity and hydrology research is quite scarce and carried out in specific places. This makes the extrapolation of the investigations difficult, since this study area has particular conditions given, for example, by volcanic activity [@Walter2016volcanic].
+
+Climate change has mostly mentioned in terms of past changes. There are some exceptions with future predictions for the region, that indicates more recurrent, intense, and temporally extended droughts for central and south central Chile. The authors propose that under this scenario, land use planning and fire and forest management strategies must promote a more diverse and less flammable landscape mosaic limiting high load, homogeneous, and continuous exotic plantations [@Gonzalez2018Mega]. Additionally, there is one technical report from Chilean Ministry of the Environment that describe the regional state of biodiversity and its threats [@MMA2016diagnostico]. It also gathers information of climate change effects for the country, but only makes a descriptive estimation for the region, 
+alluding a future decrease in precipitation and an increment of temperature in areas of high altitude. 
+
+Although the three NP are Andean and present similar characteristics in terms land use and vegetational, particular attributes in terms of surrounded urban areas and the relation with the local communities, geographical attributes, and biodiversity.
+For instance AANP is nearby Puerto Montt, it has contact with Reloncavi Sound and Reloncavi fjord which present marine and coastal ecosystems that were not contemplate in this revision.
+In order to fulfill the needs in ecological knowledge, future research should focus those under-researched areas (for instance, freshwater diversity, hydrology, and social-ecology), regarding particular attributes of the study areas.
+Doing that, we'll be allowed not only to comprehend biodiversity and ecosystems today, also to gather information that allows to create projections in order to plan for future scenarios of climate change.
 
 ```{r data, include=FALSE}
 Carpeta_results <- paste0(getwd(), "/Climate_Results/")
@@ -309,7 +446,7 @@ Regiones <- read_rds("Regiones.rds")
 GCMs <- list.files(path = "ChelsaData/Future") %>% str_remove_all("_rcp85.rds")
 ```
 
-# Climate change analisis
+# Climate change analysis
 
 ```{r Crops, cache = T}
 ### Leer presente
@@ -347,7 +484,7 @@ hull <- PNLagos_Rios %>% sf::st_union() %>% st_transform(crs = "+proj=tcea +lon_
 
 ## Climate change in southern Chile
 
-In order to evaluate possible scenarios of climate change in the given area, we used a polygon comprising the Los Lagos and Los Ríos regions in Chile, and compared them using GCM compareR [@fajardo2020gcm], considering Mean Anual Temperature and Annual Precipitation. The resulting scaled table of comparisson among futures was then use to select models to be used in the project.
+In order to evaluate possible scenarios of climate change in the given area, we used a polygon comprising the Los Lagos and Los Ríos regions in Chile, and compared them using GCM compareR [@fajardo2020gcm], considering Mean Annual Temperature and Annual Precipitation. The resulting scaled table of comparison among futures was then use to select models to be used in the project.
 
 We used the simple structure index (ssi) as implemented by the Vegan package [@Oksanen_2019; @dolnicar1999tale] to test what number of clusters (Between two and eight), was the best way to represent the 32 Compared GCMs. The best representation was five clusters, from each cluster the GCM closest to the centroid of the cluster was selected. The five selected GCMS were `r AndList(table_scaled %>% dplyr::filter(GCM != "") %>% pull(GCM))` and the selected GCMs together with the clusters are shown in figure \@ref(fig:SelectedGCMs). 
 
@@ -367,7 +504,7 @@ ggplot(table_scaled, aes(x = x_axis, y = y_axis)) +
 
 ### Present climate conditions
 
-Once the future GCM models were selected, the 30 seconds resolution maps were downloaded for 2070 and for present conditons from CHELSA [@karger2020high].
+Once the future GCM models were selected, the 30 seconds resolution maps were downloaded for 2070 and for present conditions from CHELSA [@karger2020high].
 The present conditions for the Los Lagos and Los Ríos Region are shown in Figure \@ref(fig:PresenteClima), with a close up to the 10 Km buffer surrounding the park in \@ref(fig:PresenteClimaBuffer). The region is a cold and humid area, with a range in the mean annual temperature from `r round(cellStats(Presente[[1]], min), 2)` to `r round(cellStats(Presente[[1]], max), 2)` degrees Celsius and a mean of `r round(cellStats(Presente[[1]], mean), 2)`, and a precipitation range between `r round(cellStats(Presente[[2]], min), 2)` to `r prettyNum(round(cellStats(Presente[[2]], max)),big.mark =",")` and a mean of `r prettyNum(round(cellStats(Presente[[2]], mean)),big.mark = ",")` mm a year. 
 
 ```{r PresenteClima, fig.cap= "Mean anual temperature in °C (Facet A), and Annual Precipitation mm (Facet B)", out.width = "100%", out.height="100%"}
@@ -392,7 +529,7 @@ Presente_Hull_DF <- Presente_Hull %>%  as("SpatialPixelsDataFrame") %>% as.data.
 ```
 
 
-The parks concidered in this proyect are in high altitude which leads to even cooler and wetter conditions, with a range from `r BestNumbers(cellStats(Presente_Hull[[1]], min))` to `r BestNumbers(cellStats(Presente_Hull[[1]], max))` and a mean of `r BestNumbers(cellStats(Presente_Hull[[1]], mean))` degrees Celsius, and a precipitation range from from `r BestNumbers(cellStats(Presente_Hull[[2]], min))` to `r BestNumbers(cellStats(Presente_Hull[[2]], max))` and a mean of `r BestNumbers(cellStats(Presente_Hull[[2]], mean))` mm as seen in figure \@ref(fig:PresenteClimaBuffer).
+The parks considered in this project are in high altitude which leads to even cooler and wetter conditions, with a range from `r BestNumbers(cellStats(Presente_Hull[[1]], min))` to `r BestNumbers(cellStats(Presente_Hull[[1]], max))` and a mean of `r BestNumbers(cellStats(Presente_Hull[[1]], mean))` degrees Celsius, and a precipitation range from from `r BestNumbers(cellStats(Presente_Hull[[2]], min))` to `r BestNumbers(cellStats(Presente_Hull[[2]], max))` and a mean of `r BestNumbers(cellStats(Presente_Hull[[2]], mean))` mm as seen in figure \@ref(fig:PresenteClimaBuffer).
 
 ```{r PresenteClimaBuffer, fig.cap= "Mean anual temperature in °C (Facet A), and Annual Precipitation mm (Facet B) in the three studied national parks white lines, and a 10 km buffer red line", out.width = "100%", out.height="100%"}
 
@@ -422,9 +559,9 @@ Dif_Temp_DF <- Dif_Temp %>% as("SpatialPixelsDataFrame") %>%
 ggplot() + geom_raster(data =Dif_Temp_DF, aes(x = x, y = y, fill = Temperature)) + geom_sf(data = Regiones, alpha = 0, size = 0.1) + geom_sf(data= hull, alpha = 0, size = 0.1, color = "red") + geom_sf(data = PNLagos_Rios, alpha = 0, color = "white", size = 0.1) + facet_wrap(~GCM) + scale_fill_viridis_c(option = "inferno") + labs(x = NULL, y = NULL) + scale_x_continuous(breaks =c(-74:-72)) + theme_bw(base_size = 8)
 ```
 
-As stated above, the four GCMs chosen to explore and model future scenarios are `r AndList(table_scaled %>% dplyr::filter(GCM != "") %>% pull(GCM))`. Even when this models include relatively wetter models such as `r table_scaled %>% dplyr::filter(GCM != "") %>% dplyr::filter(y_axis == max(y_axis)) %>% pull(GCM)`. On average for the whole region, the temperature will rise from `r BestNumbers(min(cellStats(Dif_Temp, mean)))` to `r BestNumbers(max(cellStats(Dif_Temp, mean)))` depending on the GCM (See figure \@ref(fig:DifTemp)), but in some areas, it the tempearture rise could be as high as `r BestNumbers(max(cellStats(Dif_Temp, max)))` degrees Celsius.
+As stated above, the four GCMs chosen to explore and model future scenarios are `r AndList(table_scaled %>% dplyr::filter(GCM != "") %>% pull(GCM))`. Even when this models include relatively wetter models such as `r table_scaled %>% dplyr::filter(GCM != "") %>% dplyr::filter(y_axis == max(y_axis)) %>% pull(GCM)`. On average for the whole region, the temperature will rise from `r BestNumbers(min(cellStats(Dif_Temp, mean)))` to `r BestNumbers(max(cellStats(Dif_Temp, mean)))` depending on the GCM (See figure \@ref(fig:DifTemp)), but in some areas, it the temperature rise could be as high as `r BestNumbers(max(cellStats(Dif_Temp, max)))` degrees Celsius.
 
-As seen in figure \@ref(fig:DifTempHull), those changes are even higher within the parks and it's sorrounding areas, which means the effects of climate change might be even greater.
+As seen in figure \@ref(fig:DifTempHull), those changes are even higher within the parks and it's surrounding areas, which means the effects of climate change might be even greater.
 
 ```{r DifTempHull, fig.cap="Temperature difference for all five GCMs, for the Close up of the area of influence of the parks"}
 Dif_Temp_Hull <- Dif_Temp %>% crop(hull) 
@@ -466,7 +603,7 @@ ggplot() + geom_raster(data =Dif_Prec_Hull_DF, aes(x = x, y = y, fill = Precipit
 
 The range of changes between GCMs will be from from `r BestNumbers(min(cellStats(Dif_Prec, mean)))` to `r BestNumbers(max(cellStats(Dif_Prec, mean)))` mean annual precipitation for the whole area. Again the areas where there is going to be a higher drop in precipitation are mostly inside of the national parks, as seen in figure \@ref(fig:DifPrecHull), with changes in the mean annual precipitation within the are of `r BestNumbers(min(cellStats(Dif_Prec_Hull, mean)))` for the wettest models, and `r BestNumbers(max(cellStats(Dif_Prec_Hull, mean)))` for the driest models.
 
-## Vegetational formation
+## Vegetation formation
 
 ```{r}
 
@@ -474,7 +611,7 @@ Formation_Change <- read_rds("Formation_Change.rds")
 ```
 
 
-We used @luebert2009depuracion to check current vegetational formations as seen in figure \@ref(fig:VegHull)
+We used @luebert2009depuracion to check current vegetation formations as seen in figure \@ref(fig:VegHull)
 
 ```{r VegHull, fig.cap= "Vegetational formation in the influence area of the parks"}
 Pisos_hull <- read_rds("Pisos_hull.rds")
@@ -486,7 +623,7 @@ ggplot() + geom_sf(data = Pisos_hull, aes(fill = PISO), size = 0.01) +  geom_sf(
 
 ### Climatic analogues
 
-As seen above, changes in precipitation will be very large. Because of that, we checked which areas in the present have the same climate as it is predicted to be in the future in the national parks and sorrounding areas using the analouges R package [@ramirez2011climate]. After doing that, the current vegetational formations of those areas were checked in order to determine possible future vegetation in the area. With that we might better understand the biological consecuences of climate change.
+As seen above, changes in precipitation will be very large. Because of that, we checked which areas in the present have the same climate as it is predicted to be in the future in the national parks and surrounding areas using the analogues R package [@ramirez2011climate]. After doing that, the current vegetation formations of those areas were checked in order to determine possible future vegetation in the area. With that we might better understand the biological consequences of climate change.
   
 ```{r}
   NewFormations <- Formation_Change %>% pivot_longer(cols = -c("Rank")) %>% 
@@ -499,12 +636,12 @@ Desapeared <- Formation_Change$Present[!(Formation_Change$Present %in% Desapeare
 ```
 
 
-Currently in the National Parks and sorrouding areas, the five most common Vegetational formations are `r AndList(Formation_Change$Present)`, and in the future, new vegetational formations that would be part of the five most common ones would include `r AndList(NewFormations)`. Of the current five most common formations, the ones that would be reduced as far as that they would either be lost completely or become very rare are `r AndList(Desapeared)`
+Currently in the National Parks and surrounding areas, the five most common Vegetation formations are `r AndList(Formation_Change$Present)`, and in the future, new vegetation formations that would be part of the five most common ones would include `r AndList(NewFormations)`. Of the current five most common formations, the ones that would be reduced as far as that they would either be lost completely or become very rare are `r AndList(Desapeared)`
 
 ```{r TablaForm}
 Formation_Change <- read_rds("Formation_Change.rds") %>% mutate_all(~str_wrap(.x, width = 8))
 
-kable(Formation_Change, booktabs = T, caption = "Top five vegetation formations for the present and for the different GCMs acording to the analogous climate analysis") %>% kable_styling(font_size = 5, full_width = F)
+kable(Formation_Change, booktabs = T, caption = "Top five vegetation formations for the present and for the different GCMs according to the analogous climate analysis") %>% kable_styling(font_size = 5, full_width = F)
 ```
 
 
