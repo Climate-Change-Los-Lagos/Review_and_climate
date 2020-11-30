@@ -90,14 +90,14 @@ Study object classification was prepared based on what is the minimum element st
 
 Study objects also included non-living organisms, focusing in geographic elements (basins, groundwater Storage, lakes, runoff, streams, watersheds, and also soil and regional subdivision), physical conditions (fires, precipitation, particulate matter, rock art), and data bases.
     
-In order to centered this review in ecological knowledge carry out in the area of study, we focus our search in Los Lagos region research and Andean studies in surrounded areas. We left out coastal systems within the region, specially research based on Chiloé island because local communities keep a traditional way of life  and agricultural systems. This was even proposed as Global Importance Agricultural Heritage System (GIAHS) by the Food and Agricultural Organization [@FAO2003Chiloe; @FAO2008Chiloe].
+In order to center this review in ecological knowledge carried out in the area of study, we focused our search in Los Lagos region research and Andean studies in surrounded areas. We left out coastal systems within the region, specially research based on Chiloé island because local communities keep a traditional way of life  and agricultural systems. This was even proposed as Global Importance Agricultural Heritage System (GIAHS) by the Food and Agricultural Organization [@FAO2003Chiloe; @FAO2008Chiloe].
 
 
 ## Results
 
 There is a large amount of research related to Southern Chile. Isi Web of Knowledge database identified 874 records that fitted keywords, of those 520 articles were screened, and  441 full-text articles were assessed for eligibility.
 
-A total of  `r nrow(DF)` articles were selected in this review. From those `r (DF %>% dplyr::filter(Keywords.used=="Name of parks") %>% nrow())` articles were find from the three National Parks and `r (DF %>% dplyr::filter(Keywords.used =="Close area") %>%  nrow())` articles from searching nearby areas of them. 
+A total of  `r nrow(DF)` articles were selected in this review. From those `r (DF %>% dplyr::filter(Keywords.used=="Name of parks") %>% nrow())` articles were found from the three National Parks and `r (DF %>% dplyr::filter(Keywords.used =="Close area") %>%  nrow())` articles from searching nearby areas. 
 
 ```{r Years, fig.cap="Temporal distribution of articles according to keywords used in this review of literature", fig.width=8}
 Pub_year <-ggplot(DF) + geom_bar(aes(x = Publication.Year, fill=Keywords.used))+  labs(y="Number of articles", x="Publication year")  + theme_classic()+   theme(text=element_text(size=18,  family="Times"))+ scale_fill_manual(values = c('#d8b365','#5ab4ac'))
@@ -105,11 +105,11 @@ Pub_year
 ```
 
 
-In general terms, number of articles have been increasing during the years. However there are a few years, such as 2003, 2006, 2014, and 2020 that show a striking decrease in publications (Fig \@ref(fig:Years)). Studies in NP do not show a pattern during the years, only two picks in publications: in 2001 and 2015.
+In general terms, the number of articles have been increasing during the years. However there are a few years, such as 2003, 2006, 2014, and 2020 that show a striking decrease in publications (Fig \@ref(fig:Years)). Studies in NP do not show a pattern during the years, only two peaks in publications: in 2001 and 2015.
 
 
 
-```{r Locations, fig.width=8, fig.cap="Locations where studies were carry out"}
+```{r Locations, fig.width=8, fig.cap="Locations where studies were carried out"}
 DF_Location <- DF %>%  group_by(Study.location) %>% summarise(n = n()) %>% ungroup() %>% dplyr::filter(!is.na(Study.location)) %>% 
   mutate(Study.location=fct_reorder(Study.location, -n))
 
@@ -129,7 +129,7 @@ Location2
 
 
 
-From the articles carry out in the NP of interest, only `r (DF %>% dplyr::filter(Study.location == "PNP") %>% nrow())` articles were carry out in PNP, `r (DF %>% dplyr::filter(Study.location == "AANP") %>% nrow())` in AAPN and `r (DF %>% dplyr::filter(Study.location == "VPRNP") %>% nrow())` in VPRPN.
+From the articles carried out in the NPs of interest, only `r (DF %>% dplyr::filter(Study.location == "PNP") %>% nrow())` articles were carried out in PNP, `r (DF %>% dplyr::filter(Study.location == "AANP") %>% nrow())` in AAPN and `r (DF %>% dplyr::filter(Study.location == "VPRNP") %>% nrow())` in VPRPN.
 Adjacent areas to these three NP comprehended `r DF %>% dplyr::filter(Study.location %in%  c("Adjacent to PNP", "Adjacent to AANP", "Adjacent to VPRNP")) %>% nrow()` studies. Similar ecosystems, as those found in Andes of Los Ríos Region and Neuquén Province in Argentina, also showed high number of publications `r (DF %>% dplyr::filter(Study.location %in% c("Andes of Los Rios Region", "Neuquen, Argentina", "Argentinian andes")) %>% nrow())`. However, most of the articles (`r (DF %>% dplyr::filter(Study.location %in% c("Los Lagos Region", "2 regions","3 regions", "4 regions", "5 regions", "More than 5 regions")) %>% nrow())`) studied larger areas that comprises Los Lagos Region and the three NP (Fig \@ref(fig:Locations)).
 
 
@@ -169,8 +169,8 @@ p2 <- ggplot(DF_Area2) + geom_col(aes(x = fct_reorder(Area.of.study2, desc(n)), 
 p1/p2+ plot_annotation(tag_levels = 'A')
 ```
 
-According to study areas, half of the studies are focus on ecosystem functioning and services (`r ((((DF %>% dplyr::filter(Area.of.study=="Ecosystem functioning and services") %>% nrow()))/nrow(DF) )*100) %>% round(2)`%). The rest of the studies does not exceed the 20 articles each. They are in decreasing number: Climate and environment, Hydrology, and freshwater biodiversity studies. The rest of the areas have less than 10 articles published (Fig \@ref(fig:Areas)).
-In addition, Ecosystem functioning and services has been studied in the three NP, however its proportion in PNP is notably higher than the other NP. Additionally, PNP is the only NP that shows several areas of study, even with only a few articles. In terms of area of study, Hydrology is the next area with more studies in NP with mention in AANP and PNP.
+According to study areas, half of the studies are focused on ecosystem functioning and services (`r ((((DF %>% dplyr::filter(Area.of.study=="Ecosystem functioning and services") %>% nrow()))/nrow(DF) )*100) %>% round(2)`%). The rest of the studies does not exceed 20 articles each. They are in decreasing number: Climate and environment, Hydrology, and freshwater biodiversity studies. The rest of the areas have less than 10 articles published (Fig \@ref(fig:Areas)).
+In addition, Ecosystem functioning and services have been studied in the three NP, however its proportion in PNP is notably higher than the other NP. Additionally, PNP is the only NP that shows several areas of study, even with only a few articles. In terms of area of study, Hydrology is the next area with more studies in NP with mention in AANP and PNP.
 
 
 
@@ -197,7 +197,7 @@ p2
 
 Data collected from the field is abundant and represents a `r (((DF %>% dplyr::filter(General_methods %in% c("Field survey", "Field collection", "Field experiment")) %>% nrow())/nrow(DF))*100) %>% round(2)` % of the studies. Among field collection, it highlights some studies where there is some specific collection of data through methods such as dendrochronology (`r DF %>% dplyr::filter(Methodology =="dendrochronology") %>% nrow()` articles) or electric fishing (`r DF %>% dplyr::filter(Methodology =="Electric fishing") %>% nrow()`), (Fig \@ref(fig:Methods)).
 Modeling category included `r DF %>% dplyr::filter(General_methods == "Modeling") %>% nrow()` articles taking into account correlational, multivariate , and spatially explicit models.
-Review of literature was mention in `r DF %>% dplyr::filter(General_methods == "Review of literature") %>% nrow()` articles and social methods that encompasses communicational strategies, discussion articles, both quantitative and qualitative methods, surveys, and interviews comprehended only in `r DF %>% dplyr::filter(General_methods == "Social methods") %>% nrow()`. 
+Review of literature was mentioned in `r DF %>% dplyr::filter(General_methods == "Review of literature") %>% nrow()` articles and social methods that encompasses communicational strategies, discussion articles, both quantitative and qualitative methods, surveys, and interviews comprehended only in `r DF %>% dplyr::filter(General_methods == "Social methods") %>% nrow()`. 
 The least used method in this review is molecular analysis (only `r DF %>% dplyr::filter(General_methods == "Molecular analysis") %>% nrow()`), and included isotopes, genetic analysis, and reconstruction of mt-DNA.
 
 
@@ -263,12 +263,13 @@ kable(DF_objectTable, booktabs = T, caption = "Study objects in detail", align =
   
 
 ```
-Studies in species and communities are mention in three groups: 1. Animals with a `r ((DF %>% dplyr::filter(General_object == "Animals")%>%  nrow())/nrow(DF)*100) %>% round(2) `% of the articles, 2. Plants with a `r ((DF %>% dplyr::filter(General_object == "Plants")%>%  nrow())/nrow(DF)*100) %>% round(2)`%  and 3. Other organisms with a `r ((DF %>% dplyr::filter(General_object == "Animals")%>%  nrow())/nrow(DF)*100) %>% round(2)`% 
 
-Human elements studied only represent `r ((DF %>% dplyr::filter(General_object == "Humans")%>%  nrow())/nrow(DF)*100) %>% round(2) `% of the total of research. This included studies in people (9) and specific interests such as household combustion, and urban areas (only 2 articles)
+Studies of species and communities are mentioned in three groups: 1. Animals with a `r ((DF %>% dplyr::filter(General_object == "Animals")%>%  nrow())/nrow(DF)*100) %>% round(2) `% of the articles, 2. Plants with a `r ((DF %>% dplyr::filter(General_object == "Plants")%>%  nrow())/nrow(DF)*100) %>% round(2)`%  and 3. Other organisms with a `r ((DF %>% dplyr::filter(General_object == "Animals")%>%  nrow())/nrow(DF)*100) %>% round(2)`% 
 
-Geographic objects of study are centered in hydrological elements such as basins, watershed, basins, groundwater storage, runoff, and streams (14 of 16 articles), most of them studied lakes (8 articles).
-Physical conditions reunited study objects in a variety from environmental conditions such as precipitation and fire, passing through particular matter and rock art.
+Human elements studied only represent `r ((DF %>% dplyr::filter(General_object == "Humans")%>%  nrow())/nrow(DF)*100) %>% round(2) `% of the total of research. This included studies of people (9) and specific interests such as household combustion, and urban areas (only 2 articles)
+
+Geographic objects of study are centered in hydrological elements such as basins, watersheds, groundwater storage, runoff, and streams (14 of 16 articles), most of them studied lakes (8 articles).
+Physical conditions reunited varied study objects from environmental conditions such as precipitation and fire, passing through particular matter and rock art.
   
 
 ### Key components
@@ -319,7 +320,8 @@ Fresh2 <- ggplot(DF_Fresh) + geom_col(aes(x = General_methods, y=n), fill="#d8b3
 Fresh3 <- ggplot(DF_Fresh) + geom_col(aes(x = General_object, y=n), fill="#5ab4ac") +labs(y="Number of articles", x=" ")  + theme_classic()+   theme(text=element_text(size=18,  family="Times"))+ theme(axis.text.x = element_text(angle = 0, vjust = 1, hjust=0.5)) 
 (Fresh1 + Fresh2)/Fresh3 + plot_annotation(tag_levels = 'A')
 ```
-Freshwater biodiversity studies focuses mostly in invasion processes (4 articles). Additionally, field collection is the most registered method used (6 articles), this category includes particular activities such as electric fishing and sampling stations. 
+
+Freshwater biodiversity studies focuses mostly on invasion processes (4 articles). Additionally, field collection is the most registered method used (6 articles), this category includes particular activities such as electric fishing and sampling stations. 
 Object of studies are centered in living organisms with a 90% of the articles, among them most of the articles studied animals (5 articles, mostly fishes), and other organisms (3 articles, including cyanobacterias, Didymosphenia, and protozoa).
 
 #### Social-ecological
@@ -350,7 +352,7 @@ Climate3 <- ggplot(DF_Climate) + geom_col(aes(x = General_object, y=n), fill="#5
 (Climate1 + Climate2)/Climate3 + plot_annotation(tag_levels = 'A')
 ```
 
-Climate and environmental area is diverse and showed focus in studies related to pollution with a component of social studies and climate in different scales and times. Among the processes studied, pollution is the most mentioned (6 articles), however the amount of publications centered in climate is not less (current climate 2 articles, climate change 1 article, past climate change 3 articles). Methods used are mostly collections from the field and modeling (41 and 29%, respectively). Study objects are diverse and involved data bases (5 articles with fire and temperature records or spatial projections), geographic elements (4 articles, including regional subdivision, lakes and soil), humans (3 articles including people and household combustion), physical conditions (3 articles, including precipitation, fires and particulate matter)
+Climate and environmental area is diverse and showed focus in studies related to pollution with a component of social studies and climate in different scales and times. Among the processes studied, pollution (6 articles) and climate (current climate 2 articles, climate change 1 article, past climate change 3 articles) are the most mentioned. Methods used are mostly collections from the field and modeling (41 and 29%, respectively). Study objects are diverse and involved data bases (5 articles with fire and temperature records or spatial projections), geographic elements (4 articles, including regional subdivision, lakes and soil), humans (3 articles including people and household combustion), physical conditions (3 articles, including precipitation, fires and particulate matter)
 
 #### Other key components 
 
@@ -374,27 +376,26 @@ Paleo3 <- ggplot(DF_Paleo) + geom_col(aes(x = General_object, y=n), fill="#5ab4a
 #(Paleo1 + Paleo2)/Paleo3 + plot_annotation(tag_levels = 'A')
 ```
 
-
-Species and distribution area focused mostly in distribution of species, phylogeography ans genetic variability (67% of the articles). More than a half used data from the field and all of the studies found centered in animals. In contrast, archaeology and paleoecology area presented only two articles, one focused in iconography (rock art) and the other centered in past distributions of native forest.
+Species and distribution area focused mostly in distribution of species, phylogeography ans genetic variability (67% of the articles). More than a half used data from the field and all of the studies found were centered in animals. In contrast, archaeology and paleoecology area presented only two articles, one focused in iconography (rock art) and the other centered in past distributions of native forest.
 
 ## Discussion 
 
-This review provides insight into in ecological studies carry out in three PA: PNP, VPRNP, AANP, and their surrounded geographical areas, that allow to create a baseline of ecological knowledge. Doing so, we were able to identified tendencies and gaps in research developed in these area, in order gather the information needed to generate climate change projections and create systematic conservation plans that ensure the biological diversity in Southern Chile.
+This review provides insight into in ecological studies carry out in three PA: PNP, VPRNP, AANP, and their surrounded geographical areas, that allow to create a baseline of ecological knowledge. Doing so, we were able to identify tendencies and gaps in the research developed in the area, in order to gather the information needed to generate climate change projections and create systematic conservation plans that ensure the biological diversity in Southern Chile.
 
 The results indicated that most of the studies were focused in ecosystems functioning and services and the other areas of research are poorly studied. There is a gap in social-ecological studies that includes local communities perceptions of NP and their relationship in terms of interactions.
-Climate change have been mentioned, but mostly considering aspects of the past and related to local perturbations. This is because the area of study has been continuously modified by natural events such as volcanic activity, with  volcanic centers such as Puyehue (2,240 m in PNP), Cordón Caulle (2,236 m; in PNP), Tronador (3,565 m; in VPRNP), Osorno (2,661 m; adjacent to VPRNP) [@petit1999cronologia; @SternVolcanism], and earthquakes as Valdivia in 1960 [@melnick2018back]. 
+Climate change has been mentioned, but mostly considering aspects of the past and related to local perturbations. This is because the area of study has been continuously modified by natural events such as volcanic activity, with  volcanic centers such as Puyehue (2,240 m in PNP), Cordón Caulle (2,236 m; in PNP), Tronador (3,565 m; in VPRNP), Osorno (2,661 m; adjacent to VPRNP) [@petit1999cronologia; @SternVolcanism], and earthquakes as Valdivia in 1960 [@melnick2018back]. 
 
 There is robust research area focused in ecosystem functioning and services. These studies are mostly centered in native forest, where Nothofagus regeneration dynamics is an important point of reference [@VEBLEN1979nothofagus; @Pollmann2004Nothofagus; @Soto2017nothofagus]. 
 The increment of this studies are important given the development of forestry in southern Chile. 
 Although high intensive forestry is centered in plantations of exotic species such as Pinus radiata and Eucalyptus, new approaches are considering changes in forestry and landscape management of forest plantations. This includes recovery of native forest patches [@salas2016forest] and there is also growing forestry activity applied to natural forests.
 
 Even thought the area of study presents a large number of articles related to forest and its regeneration, there are very few studies related to their threats, particularly on fire activity.
-This generate a gap in what is relevant to the area of study because the structure and composition of forest plantations (which are extensive in the area) promotes more fires than native forest of Nothofagus [@Gonzalez2018Mega; @McWethy2018fire].
-Even thought the area of study presents a large number of articles related to forest and its regeneration, there are very few studies related to their threats, particularly on fire activity.
-This generate a gap in what is relevant to the area of study because the structure and composition of forest plantations (which are extensive in the area) promotes more fires than native forest of Nothofagus [@Gonzalez2018Mega; @McWethy2018fire]. Fire events in similar areas (low access, topography, and climate) have covered large areas and affected native ecosystems. Fires in Torres del Paine National Park in 2012 (17,000 ha), China Muerta National Reserve in 2015 (3,700 ha), and Colonia Sur, Cochrane in 2019 (15,000 ha) were registered as very difficult to control  [@Arroyo2019COP]. 
+This generates a gap in what is relevant to the area of study because the structure and composition of forest plantations (which are extensive in the area) promotes more fires than native forest of Nothofagus [@Gonzalez2018Mega; @McWethy2018fire].
+
+Fire events in similar areas (low access, topography, and climate) have covered large areas and affected native ecosystems. Fires in Torres del Paine National Park in 2012 (17,000 ha), China Muerta National Reserve in 2015 (3,700 ha), and Colonia Sur, Cochrane in 2019 (15,000 ha) were registered as very difficult to control  [@Arroyo2019COP]. 
 
 The regions that were most affected by fires during the MD were Maule, Biobio, and Araucania (35 to 39°S) that concentrate 75% of forest plantations in Chile. Although both maximum temperatures and precipitation are drivers of fire activity, analysis indicates that the sustained rainfall deficit during 2010 and 2015 was the most critical factor in the enhanced fire activity [@Gonzalez2018Mega]. 
-
+  
 
 From the few studies found in social-ecological area, there are some characterizations of local actors and their relation with NP. 
 @SozaAmigoTurism studied the movement of people between urban centers and PNP. Here, the authors evaluated the
